@@ -6,12 +6,12 @@ namespace Zeptolab
     [Serializable]
     public class StatsData
     {
-       public StatsData()
+        public List<UserData> UsersStats;
+       
+        public StatsData()
         {
             UsersStats = new List<UserData>();
         }
-
-        public List<UserData> UsersStats;
 
         public void AddUserStat(UserData userData)
         {

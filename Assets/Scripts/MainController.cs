@@ -24,7 +24,7 @@ namespace Zeptolab
 
         public void SaveStats(string currentName, int coins)
         {
-            currentStats.AddUserStat(new UserData(currentName,coins));
+            currentStats.AddUserStat(new UserData(currentName, coins));
 
             for (int i = 0; i < currentStats.UsersStats.Count; i++)
             {
@@ -32,7 +32,7 @@ namespace Zeptolab
             }
 
             string jsonInfo = JsonUtility.ToJson(currentStats);
-
+            Debug.Log("jsonInfo " + jsonInfo);
             PlayerPrefs.SetString(Constants.GameStatsKey, jsonInfo);
         }
 
@@ -44,14 +44,19 @@ namespace Zeptolab
                 DontDestroyOnLoad(this.gameObject);
             }
 
-            SceneManager.LoadScene(AppState.MainMenu.ToString());
+            bool statsExists = PlayerPrefs.HasKey(Constants.GameStatsKey);
 
-            currentStats = JsonUtility.FromJson<StatsData>(Constants.GameStatsKey);
-
-            if (currentStats == null)
+            if (statsExists)
+            {
+                currentStats = JsonUtility.FromJson<StatsData>(PlayerPrefs.GetString(Constants.GameStatsKey));
+            }
+            else
             {
                 currentStats = new StatsData();
             }
+
+            SceneManager.LoadScene(AppState.MainMenu.ToString());
+
         }
     }
 }
