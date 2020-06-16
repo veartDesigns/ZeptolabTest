@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,13 @@ namespace Zeptolab
     public class MainController : MonoBehaviour
     {
         public static MainController Instance { get { return _instance; } }
+        public AllGameConfigs AllGameConfigs;
+
+        public BaseGameConfig GetGameConfig(LevelType level)
+        {
+            return AllGameConfigs.GetGameConfig(level);
+        }
+
         private static MainController _instance;
         private AppState _currentAppState;
         private IStatsData currentStats;

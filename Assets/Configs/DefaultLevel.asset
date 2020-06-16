@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a11071d3a7d34e668678521bb516ee2, type: 3}
+  m_Name: DefaultLevel
+  m_EditorClassIdentifier: 
+  LevelType: 0
+  ScenarioWidth: 40
+  ScenarioHeight: 5
+  MaxMazeColSquares: 4
+  MinMazeColSquares: 2
+  SpecialCoinsRange: 0.03
+  Speed: 1
+  JumpForce: 1
+  SquarePrefab: {fileID: 7687808015428270536, guid: 309073bb2e98843f599020dd1b9a125f,
+    type: 3}
+  WallsPrefab: {fileID: 1038390441449969959, guid: b0b60e9ff48484b989003385ef1ff018,
+    type: 3}
+  CharacterPrefab: {fileID: 0}
+  FloorPrefab: {fileID: 8028978649694230420, guid: 6179d5cc52c854a8da439c2e3d3ed1c2,
+    type: 3}
+  CoinPrefab: {fileID: 6574831905487802341, guid: 170aca47708534a1a8db4bd60a02b114,
+    type: 3}
+  SpecialCoinPrefab: {fileID: 4206002884863590601, guid: 05c1972089fc047a1a4a3b5d08cf08b2,
+    type: 3}

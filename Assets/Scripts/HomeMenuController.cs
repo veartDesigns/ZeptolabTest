@@ -44,7 +44,7 @@ public class HomeMenuController : MonoBehaviour
         else
         {
             Debug.Log("No User Stats");
-            //Show Start filling stats text;
+            //Show "Start filling stats" text;
         }
     }
 }

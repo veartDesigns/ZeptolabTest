@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a11071d3a7d34e668678521bb516ee2, type: 3}
+  m_Name: RockyLevel
+  m_EditorClassIdentifier: 
+  LevelType: 0
+  _scenarioWidth: 40
+  _scenarioHeight: 5
+  _maxMazeColSquares: 3
+  _minMazeColSquares: 1
+  _speed: 1
+  _jumpForce: 1
+  SquarePrefab: {fileID: 0}
+  WallsPrefab: {fileID: 0}
+  CharacterPrefab: {fileID: 0}
