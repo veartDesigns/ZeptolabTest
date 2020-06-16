@@ -10,14 +10,14 @@ namespace Zeptolab
         public static MainController Instance { get { return _instance; } }
         private static MainController _instance;
         private AppState _currentAppState;
-        private StatsData currentStats;
+        private IStatsData currentStats;
 
         public void SetAppState(AppState appState)
         {
             _currentAppState = appState;
         }
 
-        public List<UserData> GetStats()
+        public List<IUserData> GetStats()
         {
             return currentStats.UsersStats;
         }
@@ -28,7 +28,7 @@ namespace Zeptolab
 
             for (int i = 0; i < currentStats.UsersStats.Count; i++)
             {
-                UserData userData = currentStats.UsersStats[i];
+                IUserData userData = currentStats.UsersStats[i];
             }
 
             string jsonInfo = JsonUtility.ToJson(currentStats);
@@ -55,6 +55,7 @@ namespace Zeptolab
                 currentStats = new StatsData();
             }
 
+            PlayerPrefs.DeleteAll();
             SceneManager.LoadScene(AppState.MainMenu.ToString());
 
         }

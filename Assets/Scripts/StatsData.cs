@@ -4,21 +4,22 @@ using System.Collections.Generic;
 namespace Zeptolab
 {
     [Serializable]
-    public class StatsData
+    public class StatsData : IStatsData
     {
-        public List<UserData> UsersStats;
-       
+        public List<IUserData> UsersStats { get { return usersData; }}
+        private List<IUserData> usersData;
+
         public StatsData()
         {
-            UsersStats = new List<UserData>();
+            usersData = new List<IUserData>();
         }
 
-        public void AddUserStat(UserData userData)
+        public void AddUserStat(IUserData userData)
         {
-           // bool addData = CheckNewData(userData);
+            // bool addData = CheckNewData(userData);
             //if (!addData) return;
 
-            UsersStats.Add(userData);
+            usersData.Add(userData);
             SortUserStats();
         }
 
@@ -29,7 +30,7 @@ namespace Zeptolab
 
         public void SortUserStats()
         {
-            UsersStats.Sort((pair1, pair2) => pair2.Coins.CompareTo(pair1.Coins));
+            usersData.Sort((pair1, pair2) => pair2.Coins.CompareTo(pair1.Coins));
         }
     }
 }

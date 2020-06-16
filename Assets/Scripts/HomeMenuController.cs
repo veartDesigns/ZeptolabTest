@@ -30,10 +30,11 @@ public class HomeMenuController : MonoBehaviour
 
         if (statsExists)
         {
-            List<UserData> stats = MainController.Instance.GetStats();
-           
+            List<IUserData> stats = MainController.Instance.GetStats();
+            Debug.Log("User Stats " + stats.Count);
+
             for (int i = 0; i < stats.Count; i++){
-                UserData userData = stats[i];
+                IUserData userData = stats[i];
                 GameObject statsGo = _statsUI[i];
                 Text[] statsUIText = statsGo.transform.GetComponentsInChildren<Text>();
                 statsUIText[0].text = userData.UserName;
