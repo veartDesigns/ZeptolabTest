@@ -51,6 +51,7 @@ namespace Zeptolab
         {
             Debug.Log("OnGameEnd");
             _gameEnded = true;
+            wallSliding = false;
 
             if (win)
             {
@@ -74,17 +75,21 @@ namespace Zeptolab
 
         private void FixedUpdate()
         {
+            if (_gameEnded) return;
 
             CalculateVelocity();
             HandleWallSliding();
             _spaceCollisionsController.Move(velocity * Time.deltaTime, directionalInput);
-            Vector3 rotation = CharacterModel.transform.eulerAngles;
-            float sign = Mathf.Sign(velocity.x);
-            rotation.y = sign*90;
-            CharacterModel.transform.eulerAngles = rotation;
-            SetDirectionalInput(sign*Vector3.right * RightSpeed);
 
-            if (_gameEnded) return;
+            if (!wallSliding)
+            {
+                Vector3 rotation = CharacterModel.transform.eulerAngles;
+                float sign = Mathf.Sign(velocity.x);
+                rotation.y = sign * 90;
+                CharacterModel.transform.eulerAngles = rotation;
+           
+                SetDirectionalInput(sign*Vector3.right * RightSpeed);
+            }
 
             if (_spaceCollisionsController.collisionsInfo.above || _spaceCollisionsController.collisionsInfo.below)
             {
@@ -139,12 +144,17 @@ namespace Zeptolab
             if ((_spaceCollisionsController.collisionsInfo.left || _spaceCollisionsController.collisionsInfo.right) && !_spaceCollisionsController.collisionsInfo.below && velocity.y < 0)
             {
                 wallSliding = true;
+                Vector3 rotation = CharacterModel.transform.eulerAngles; 
                 if (_spaceCollisionsController.collisionsInfo.left) 
                 {
+                    rotation.y = - 180;
                     _characterAnimation.Play(Constants.WallLeftAnimationName); 
+
                 }else{
+                    rotation.y = 180;
                     _characterAnimation.Play(Constants.WallRightAnimationName);
                 }
+                CharacterModel.transform.eulerAngles = rotation;
 
                 if (velocity.y < -wallSlideSpeedMax)
                 {
