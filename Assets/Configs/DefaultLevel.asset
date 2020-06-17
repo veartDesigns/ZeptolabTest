@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultLevel
   m_EditorClassIdentifier: 
   LevelType: 0
-  ScenarioWidth: 40
+  ScenarioWidth: 15
   ScenarioHeight: 5
   MaxMazeColSquares: 4
   MinMazeColSquares: 2
@@ -24,10 +24,13 @@ MonoBehaviour:
     type: 3}
   WallsPrefab: {fileID: 1038390441449969959, guid: b0b60e9ff48484b989003385ef1ff018,
     type: 3}
-  CharacterPrefab: {fileID: 0}
+  CharacterPrefab: {fileID: 2101345510283859535, guid: ff46ccab7f71b4faaabe25b81e43358b,
+    type: 3}
   FloorPrefab: {fileID: 8028978649694230420, guid: 6179d5cc52c854a8da439c2e3d3ed1c2,
     type: 3}
   CoinPrefab: {fileID: 6574831905487802341, guid: 170aca47708534a1a8db4bd60a02b114,
     type: 3}
   SpecialCoinPrefab: {fileID: 4206002884863590601, guid: 05c1972089fc047a1a4a3b5d08cf08b2,
+    type: 3}
+  EndGamePortalPrefab: {fileID: 6203253287824999008, guid: 6ae88fc89f20648fb8a622ae7adebb2e,
     type: 3}

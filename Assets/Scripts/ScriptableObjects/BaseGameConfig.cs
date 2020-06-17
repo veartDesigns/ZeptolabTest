@@ -20,5 +20,6 @@ public class BaseGameConfig : ScriptableObject
     public GameObject CharacterPrefab;
     public GameObject FloorPrefab;
     public GameObject CoinPrefab;
-    public GameObject SpecialCoinPrefab; 
+    public GameObject SpecialCoinPrefab;
+    public GameObject EndGamePortalPrefab;
 }

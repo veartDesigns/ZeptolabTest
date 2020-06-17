@@ -7,9 +7,8 @@ using Zeptolab;
 
 public class ScenarioCreator : MonoBehaviour
 {
-
     public static ScenarioCreator Instance { get { return _instance; } }
-    public Action OnFinishScenario;
+    public Action<Vector3> OnFinishScenario;
     private static ScenarioCreator _instance;
 
     private int _scenarioWidth ;
@@ -23,10 +22,12 @@ public class ScenarioCreator : MonoBehaviour
 
     private GameObject _coinsPrefab;
     private GameObject _specialCoins;
+    private GameObject _endGamePortal;
 
     private GameObject _scenarioContainer;
-    private float _zDistance = 10;
+    private float _zDistance = 0;
     private float _specialCoinsRange;
+    private Vector3 _spawnPosition;
 
     void Awake()
     {
@@ -55,6 +56,7 @@ public class ScenarioCreator : MonoBehaviour
         _coinsPrefab = gameConfig.CoinPrefab;
         _mazeSquares = gameConfig.SquarePrefab;
         _specialCoinsRange = gameConfig.SpecialCoinsRange;
+        _endGamePortal = gameConfig.EndGamePortalPrefab;
     }
 
     private void BuildScenario()
@@ -65,52 +67,91 @@ public class ScenarioCreator : MonoBehaviour
         CreateWallLimits();
         CreateMaze();
 
-        OnFinishScenario();
+        OnFinishScenario(_spawnPosition);
     }
 
     private void CreateMaze()
     {
-        int lastSpace = 0;
+        _spawnPosition = new Vector3(0, 0, _zDistance);
 
-        for (int i = 0; i < _scenarioWidth; i++)
+        for (int i = 0; i < _scenarioWidth - 1; i++)
         {
-            int SquaresInCol = UnityEngine.Random.Range(_minMazeColSquares, _maxMazeColSquares);
-            //Debug.Log(i + " SquaresInCol " + SquaresInCol);
-            List<int> colPositionsRandomized = Enumerable.Range(0, _scenarioHeight).ToList();
+            int[] height = new int[_scenarioHeight];
 
-            colPositionsRandomized = ListsUtils.RandomizeList(colPositionsRandomized);
-
-            for (int j = 0; j < colPositionsRandomized.Count; j++)
+            if ((i % 2) != 0)
             {
-                int index = colPositionsRandomized[j];
-                GameObject go = null;
+                int currentCase = UnityEngine.Random.Range(0, 2);
 
-                if (SquaresInCol<j && lastSpace != index)
+                bool ableUpAndDown = UnityEngine.Random.value < .3;
+
+                if (currentCase == 0)
                 {
-                    go  = Instantiate(_mazeSquares);
-                    go.name = "col_" + i + "_row_" + index;
+                    int maxRange = (int)Mathf.Round(_scenarioHeight / 2) + 1;
+                    int downSquareSizes = UnityEngine.Random.Range(1, maxRange + 1);
+                    for (int n = 0; n < downSquareSizes; n++)
+                    {
+                        height[n] = 1;
+                    }
+
+                    if (ableUpAndDown)
+                    {
+                        int upSquareSizes = UnityEngine.Random.Range(0, maxRange);
+
+                        int limit = height.Length - 1 - upSquareSizes;
+
+                        for (int n = height.Length - 1; n > limit; n--)
+                        {
+                            height[n] = 1;
+                        }
+                    }
                 }
                 else
                 {
-                    float rndNumber = UnityEngine.Random.value;
-                    if(rndNumber < _specialCoinsRange)
+
+                    int middleIndex = (int)Mathf.Round(_scenarioHeight / 2);
+                    height[middleIndex] = 1;
+                    int extraCube = UnityEngine.Random.value < .5 ? 0 : (UnityEngine.Random.value < .5 ? -1 : 1);
+                    if (extraCube != 0)
                     {
-                        go = Instantiate(_specialCoins);
+                        height[middleIndex + extraCube] = 1;
+                    }
+                }
+
+                for (int j = 0; j < height.Length; j++)
+                {
+                    if (i == 0 && j == 0) continue;
+                    int val = height[j];
+
+                    GameObject go = null;
+                    float offset = 0;
+
+                    if (val != 0)
+                    {
+                        go = Instantiate(_mazeSquares);
+                        go.name = "col_" + i + "_row_" + j;
                     }
                     else
                     {
-                        go = Instantiate(_coinsPrefab);
+                        float rndNumber = UnityEngine.Random.value;
+                        if (rndNumber < _specialCoinsRange)
+                        {
+                            go = Instantiate(_specialCoins);
+                        }
+                        else
+                        {
+                            go = Instantiate(_coinsPrefab);
+                            offset = -.3f;
+                        }
                     }
 
-                    go.name = "coin_col_" + i + "_row_" + index;
+                    go.transform.position = new Vector3(i, j + offset, _zDistance);
+                    go.transform.parent = _scenarioContainer.transform;
                 }
-
-                go.transform.position = new Vector3(i, index, _zDistance);
-                go.transform.parent = _scenarioContainer.transform;
             }
-
-            lastSpace = colPositionsRandomized[colPositionsRandomized.Count - 1];
         }
+
+        GameObject endPortal = Instantiate(_endGamePortal);
+        endPortal.transform.position = new Vector3(_scenarioWidth - 1, -0.5f, _zDistance);
     }
 
     private void CreateWallLimits()
@@ -127,7 +168,7 @@ public class ScenarioCreator : MonoBehaviour
         wallRight.name = Constants.RightWallName;
 
         GameObject floor = Instantiate(_floorPrefab);
-        floor.transform.position = new Vector3((_scenarioWidth / 2)-.5f, -1, _zDistance);
+        floor.transform.position = new Vector3((_scenarioWidth / 2), -1, _zDistance);
         floor.transform.localScale = new Vector3(_scenarioWidth + 2, 1, 1);
         floor.name = Constants.FloorName;
 

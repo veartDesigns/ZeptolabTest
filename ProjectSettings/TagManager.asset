@@ -13,13 +13,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Coin
+  - Wall
+  - Maze
+  - Floor
+  - End
+  - SpecialCoin
+  - Player
   - 
   - 
   - 
