@@ -87,12 +87,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CharacterModel: {fileID: 1752299634}
-  RightSpeed: 0.4
-  maxJumpHeight: 2.5
+  RightSpeed: 0.3
+  maxJumpHeight: 2.2
   timeToJumpApex: 0.4
-  wallJumpClimb: {x: 15, y: 10}
+  wallJumpClimb: {x: 8, y: 8}
   wallJumpOff: {x: 8, y: -6}
-  wallLeap: {x: 15, y: 10}
+  wallLeap: {x: 8, y: 8}
   wallSlideSpeedMax: 2
   wallStickTime: 0.6
 --- !u!54 &227104866733296393
@@ -180,32 +180,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.data[0]
       value: 
-      objectReference: {fileID: 7400002, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400008, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.data[2]
       value: 
-      objectReference: {fileID: 7400074, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400052, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.data[3]
       value: 
-      objectReference: {fileID: 7400000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400030, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.data[4]
       value: 
-      objectReference: {fileID: 7400000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400038, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animation
       value: 
-      objectReference: {fileID: 7400002, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400008, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
       propertyPath: m_Animations.Array.data[1]
       value: 
-      objectReference: {fileID: 7400018, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      objectReference: {fileID: 7400080, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+    - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      propertyPath: m_PlayAutomatically
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
+      propertyPath: m_Animations.Array.data[5]
+      value: 
+      objectReference: {fileID: 7400040, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83ba1f1b14fa15c49905e1914d40b821, type: 3}
 --- !u!1 &1752299634 stripped

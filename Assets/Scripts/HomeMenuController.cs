@@ -10,6 +10,7 @@ using Zeptolab;
 
 public class HomeMenuController : MonoBehaviour
 {
+    [SerializeField] private GameObject _statsPanel;
     [SerializeField] private List<GameObject> _statsUI;
     [SerializeField] private Button PlayButton;
     void Start()
@@ -30,11 +31,13 @@ public class HomeMenuController : MonoBehaviour
 
         if (statsExists)
         {
-            List<IUserData> stats = MainController.Instance.GetStats();
-            Debug.Log("User Stats " + stats.Count);
+            List<UserData> stats = MainController.Instance.GetStats();
 
             for (int i = 0; i < stats.Count; i++){
-                IUserData userData = stats[i];
+
+                if (i >= _statsUI.Count) continue; //TODO: that is not needed with the checker (to do) in the StatsData 
+
+                UserData userData = stats[i];
                 GameObject statsGo = _statsUI[i];
                 Text[] statsUIText = statsGo.transform.GetComponentsInChildren<Text>();
                 statsUIText[0].text = userData.UserName;
@@ -43,6 +46,7 @@ public class HomeMenuController : MonoBehaviour
         }
         else
         {
+            _statsPanel.SetActive(false);
             Debug.Log("No User Stats");
             //Show "Start filling stats" text;
         }

@@ -5,7 +5,6 @@ namespace Zeptolab
 {
     public interface IStatsData
     {
-        void AddUserStat( IUserData data);
-        List<IUserData> UsersStats { get; }
+        void AddUserStat( UserData data);
     }
 }

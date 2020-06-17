@@ -7,7 +7,7 @@ public class EndPortalTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        this.GetComponent<Collider>().enabled = false;
         GamePlayManager.Instance.PassLevel();
+        this.GetComponent<BoxCollider>().enabled = false;
     }
 }

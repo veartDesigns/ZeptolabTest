@@ -102,7 +102,6 @@ namespace Zeptolab
         private void GameOver()
         {
             StopTimer();
-            Debug.Log("GAME OVEEER");
            if(OnGameEnd != null) OnGameEnd(false);
         }
 

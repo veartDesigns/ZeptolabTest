@@ -8,6 +8,8 @@ namespace Zeptolab
     public class CharacterController : MonoBehaviour
     {
         public GameObject CharacterModel;
+        Animation _characterAnimation;
+        //TODO: pass some of that character behaviour conditions to the GameConfig Scriptable object settings in order to have the possibility of set different difficulties for each level
         public float RightSpeed;
         public float maxJumpHeight = 4;
         public float timeToJumpApex = .4f;
@@ -34,11 +36,30 @@ namespace Zeptolab
         Vector2 directionalInput;
         bool wallSliding;
         int wallDirX;
+        private bool _gameEnded;
 
         private void Awake()
         {
             InputManager.Instance.OnUserTapDown += OnUserJump;
             InputManager.Instance.SetDirectionalInput += SetDirectionalInput;
+            GamePlayManager.Instance.OnGameEnd += OnGameEnd;
+
+            _characterAnimation = CharacterModel.GetComponent<Animation>();
+        }
+
+        private void OnGameEnd(bool win)
+        {
+            Debug.Log("OnGameEnd");
+            _gameEnded = true;
+
+            if (win)
+            {
+                _characterAnimation.Play(Constants.WinAnimationName);
+            }
+            else
+            {
+                _characterAnimation.Play(Constants.GameOverAnimationName);
+            }
         }
 
         void Start()
@@ -53,16 +74,30 @@ namespace Zeptolab
 
         private void FixedUpdate()
         {
+
             CalculateVelocity();
             HandleWallSliding();
-
             _spaceCollisionsController.Move(velocity * Time.deltaTime, directionalInput);
             Vector3 rotation = CharacterModel.transform.eulerAngles;
-            rotation.y = Mathf.Sign(velocity.x)*90;
+            float sign = Mathf.Sign(velocity.x);
+            rotation.y = sign*90;
             CharacterModel.transform.eulerAngles = rotation;
+            SetDirectionalInput(sign*Vector3.right * RightSpeed);
+
+            if (_gameEnded) return;
+
             if (_spaceCollisionsController.collisionsInfo.above || _spaceCollisionsController.collisionsInfo.below)
             {
                 velocity.y = 0;
+            }
+
+            if(_spaceCollisionsController.collisionsInfo.right && _spaceCollisionsController.collisionsInfo.below || _spaceCollisionsController.collisionsInfo.left && _spaceCollisionsController.collisionsInfo.below)
+            {
+                velocity.x = 0;
+                _characterAnimation.Play(Constants.IdleAnimationName);
+            }else
+            {
+                _characterAnimation.Play(Constants.WalkAnimationName);
             }
         }
 
@@ -104,6 +139,12 @@ namespace Zeptolab
             if ((_spaceCollisionsController.collisionsInfo.left || _spaceCollisionsController.collisionsInfo.right) && !_spaceCollisionsController.collisionsInfo.below && velocity.y < 0)
             {
                 wallSliding = true;
+                if (_spaceCollisionsController.collisionsInfo.left) 
+                {
+                    _characterAnimation.Play(Constants.WallLeftAnimationName); 
+                }else{
+                    _characterAnimation.Play(Constants.WallRightAnimationName);
+                }
 
                 if (velocity.y < -wallSlideSpeedMax)
                 {

@@ -5,17 +5,18 @@ using Zeptolab;
 
 public class BaseCoinTrigger : MonoBehaviour
 {
-    private float _spawnTime = 5f;
+    private float _spawnTime;
     private IEnumerator _coroutine;
 
     private Renderer _renderer;
     private Collider _collider;
 
-
     private void Awake()
     {
-        _collider = GetComponent<Collider>();
+        _collider = GetComponent<BoxCollider>();
         _renderer = GetComponent<MeshRenderer>();
+        _spawnTime = UnityEngine.Random.Range(5,15);
+
         GamePlayManager.Instance.OnGameEnd += OnGameEnd;
     }
 
@@ -26,7 +27,7 @@ public class BaseCoinTrigger : MonoBehaviour
     }
     private void OnGameEnd(bool win)
     {
-        _collider.enabled = false;
+        if(_collider != null) _collider.enabled = false;
         StopTimer();
     }
 
@@ -54,13 +55,14 @@ public class BaseCoinTrigger : MonoBehaviour
 
     public void Hide()
     {
-        _renderer.enabled = false;
-        _collider.enabled = false;
+        if (_renderer != null) _renderer.enabled = false;
+       if(_collider != null) _collider.enabled = false;
     }
 
-    private void OnDestroy()
+    public void OnDestroy()
     {
         StopTimer();
+        GamePlayManager.Instance.OnGameEnd -= OnGameEnd;
     }
 
     private void StopTimer()

@@ -6,23 +6,23 @@ namespace Zeptolab
     [Serializable]
     public class StatsData : IStatsData
     {
-        public List<IUserData> UsersStats { get { return usersData; }}
-        private List<IUserData> usersData;
+        public List<UserData> UsersStats;
 
         public StatsData()
         {
-            usersData = new List<IUserData>();
+            UsersStats = new List<UserData>();
         }
 
-        public void AddUserStat(IUserData userData)
+        public void AddUserStat(UserData userData)
         {
-            // bool addData = CheckNewData(userData);
+            //bool addData = CheckNewData(userData);
             //if (!addData) return;
 
-            usersData.Add(userData);
+            UsersStats.Add(userData);
             SortUserStats();
         }
 
+        //TODO Check if final stats are better than the old ones;
         private bool CheckNewData(UserData newUserData)
         {
             return true;
@@ -30,7 +30,7 @@ namespace Zeptolab
 
         public void SortUserStats()
         {
-            usersData.Sort((pair1, pair2) => pair2.Coins.CompareTo(pair1.Coins));
+            UsersStats.Sort((pair1, pair2) => pair2.Coins.CompareTo(pair1.Coins));
         }
     }
 }
