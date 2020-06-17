@@ -93,7 +93,7 @@ public class ScenarioCreator : MonoBehaviour
                         height[n] = 1;
                     }
 
-                    if (ableUpAndDown)
+                    if (ableUpAndDown && downSquareSizes != maxRange)
                     {
                         int upSquareSizes = UnityEngine.Random.Range(0, maxRange);
 
@@ -116,42 +116,41 @@ public class ScenarioCreator : MonoBehaviour
                         height[middleIndex + extraCube] = 1;
                     }
                 }
+            }
+            for (int j = 0; j < height.Length; j++)
+            {
+                if (i == 0 && j == 0) continue;
+                int val = height[j];
 
-                for (int j = 0; j < height.Length; j++)
+                GameObject go = null;
+                float offset = 0;
+
+                if (val != 0)
                 {
-                    if (i == 0 && j == 0) continue;
-                    int val = height[j];
-
-                    GameObject go = null;
-                    float offset = 0;
-
-                    if (val != 0)
+                    go = Instantiate(_mazeSquares);
+                    go.name = "col_" + i + "_row_" + j;
+                }
+                else
+                {
+                    float rndNumber = UnityEngine.Random.value;
+                    if (rndNumber < _specialCoinsRange)
                     {
-                        go = Instantiate(_mazeSquares);
-                        go.name = "col_" + i + "_row_" + j;
+                        go = Instantiate(_specialCoins);
                     }
                     else
                     {
-                        float rndNumber = UnityEngine.Random.value;
-                        if (rndNumber < _specialCoinsRange)
-                        {
-                            go = Instantiate(_specialCoins);
-                        }
-                        else
-                        {
-                            go = Instantiate(_coinsPrefab);
-                            offset = -.3f;
-                        }
+                        go = Instantiate(_coinsPrefab);
+                        offset = -.3f;
                     }
-
-                    go.transform.position = new Vector3(i, j + offset, _zDistance);
-                    go.transform.parent = _scenarioContainer.transform;
                 }
+
+                go.transform.position = new Vector3(i, j + offset, _zDistance);
+                go.transform.parent = _scenarioContainer.transform;
             }
         }
 
         GameObject endPortal = Instantiate(_endGamePortal);
-        endPortal.transform.position = new Vector3(_scenarioWidth - 1, -0.5f, _zDistance);
+        endPortal.transform.position = new Vector3(_scenarioWidth - 1,0, _zDistance);
     }
 
     private void CreateWallLimits()

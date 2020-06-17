@@ -12,11 +12,17 @@ namespace Zeptolab
 
         public Action<int> CoinEarned;
         public Action<int> SpecialCoinEarned;
+        public Action<int> RemainingTimeChange;
+        public Action<bool> OnGameEnd;
 
         private BaseGameConfig _currentGameConfig;
         private GameObject _character;
         private int _currentSpecialCoins;
         private int _currentCoins;
+
+        private IEnumerator _coroutine;
+        private int _levelTime = 20;
+        private string _currentName;
 
         private void Awake()
         {
@@ -24,6 +30,7 @@ namespace Zeptolab
             {
                 _instance = this;
             }
+            _currentName = "User_" + UnityEngine.Random.RandomRange(0,999);
         }
 
         private void Start()
@@ -31,6 +38,39 @@ namespace Zeptolab
             _currentGameConfig = MainController.Instance.GetGameConfig(LevelType.DefaultLevel);
             ScenarioCreator.Instance.OnFinishScenario += OnFinishScenario;
             ScenarioCreator.Instance.Create(_currentGameConfig);
+
+            StartTimer();
+        }
+
+        public void PassLevel()
+        {
+            Debug.Log("Level Passed");
+            StopTimer();
+            MainController.Instance.SaveStats(_currentName,_currentCoins);
+            if (OnGameEnd != null) OnGameEnd(true);
+        }
+
+        public void OnGetCoin()
+        {
+            StopTimer();
+
+            _currentCoins++;
+
+            if (CoinEarned != null) CoinEarned(_currentCoins);
+
+            StartTimer();
+        }
+        public void OnGetSpecialCoin()
+        {
+            StopTimer();
+
+            _currentSpecialCoins++;
+            int newCoins = (int)Mathf.Round(_currentCoins * .1f);
+            _currentCoins += newCoins;
+
+            if (CoinEarned != null) CoinEarned(_currentCoins);
+            if (SpecialCoinEarned != null) SpecialCoinEarned(_currentSpecialCoins);
+            StartTimer();
         }
 
         private void OnFinishScenario(Vector3 CharaterSpawnPos)
@@ -48,23 +88,33 @@ namespace Zeptolab
             CameraController.Instance.SetTarget(_character);
         }
 
-        public void OnGetCoin()
+        private IEnumerator Timer(int waitTime)
         {
-            _currentCoins++;
-            Debug.Log("_currentCoins " + _currentCoins);
+            for (int i = 0; i < waitTime; i++)
+            {
+                RemainingTimeChange(waitTime - i);
+                yield return new WaitForSeconds(1f);
+            }
 
-            if (CoinEarned != null) CoinEarned(_currentCoins);
+            GameOver();
         }
-        public void OnGetSpecialCoin()
+
+        private void GameOver()
         {
-            _currentSpecialCoins++;
-            int newCoins = (int)Mathf.Round(_currentCoins * .1f);
-            Debug.Log(_currentCoins + " newCoins " + newCoins);
+            StopTimer();
+            Debug.Log("GAME OVEEER");
+           if(OnGameEnd != null) OnGameEnd(false);
+        }
 
-            _currentCoins += newCoins;
+        private void StartTimer()
+        {
+            _coroutine = Timer(_levelTime);
+            StartCoroutine(_coroutine);
+        }
 
-            if (CoinEarned != null) CoinEarned(_currentCoins);
-            if (SpecialCoinEarned != null) SpecialCoinEarned(_currentSpecialCoins);
+        private void StopTimer()
+        {
+            if(_coroutine != null) StopCoroutine(_coroutine);
         }
 
         private void OnDestroy()

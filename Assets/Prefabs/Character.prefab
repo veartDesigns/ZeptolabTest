@@ -90,9 +90,9 @@ MonoBehaviour:
   RightSpeed: 0.4
   maxJumpHeight: 2.5
   timeToJumpApex: 0.4
-  wallJumpClimb: {x: 15, y: 7}
+  wallJumpClimb: {x: 15, y: 10}
   wallJumpOff: {x: 8, y: -6}
-  wallLeap: {x: 15, y: 7}
+  wallLeap: {x: 15, y: 10}
   wallSlideSpeedMax: 2
   wallStickTime: 0.6
 --- !u!54 &227104866733296393

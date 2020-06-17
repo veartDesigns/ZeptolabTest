@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Zeptolab;
 
 public class BaseCoinTrigger : MonoBehaviour
 {
@@ -10,16 +11,23 @@ public class BaseCoinTrigger : MonoBehaviour
     private Renderer _renderer;
     private Collider _collider;
 
+
     private void Awake()
     {
         _collider = GetComponent<Collider>();
         _renderer = GetComponent<MeshRenderer>();
+        GamePlayManager.Instance.OnGameEnd += OnGameEnd;
     }
 
     private IEnumerator WaitToSpawn(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         Spawn();
+    }
+    private void OnGameEnd(bool win)
+    {
+        _collider.enabled = false;
+        StopTimer();
     }
 
     private void Spawn()
@@ -51,6 +59,11 @@ public class BaseCoinTrigger : MonoBehaviour
     }
 
     private void OnDestroy()
+    {
+        StopTimer();
+    }
+
+    private void StopTimer()
     {
         if (_coroutine != null)
         {

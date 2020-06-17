@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Zeptolab;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class InputManager : MonoBehaviour
     public Action OnUserTapUp;
     public Action<Vector2> SetDirectionalInput;
     private static InputManager _instance;
+    private bool _inputEnabled = true;
 
     void Awake()
     {
@@ -16,11 +18,17 @@ public class InputManager : MonoBehaviour
         {
             _instance = this;
         }
+        GamePlayManager.Instance.OnGameEnd += OnGameEnd;
+    }
+
+    private void OnGameEnd(bool win)
+    {
+        _inputEnabled = false;
     }
 
     void Update()
     {
-
+        if (!_inputEnabled) return;
 #if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -39,5 +47,10 @@ public class InputManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GamePlayManager.Instance.OnGameEnd -= OnGameEnd;
     }
 }
