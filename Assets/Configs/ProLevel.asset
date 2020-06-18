@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a11071d3a7d34e668678521bb516ee2, type: 3}
   m_Name: ProLevel
   m_EditorClassIdentifier: 
-  LevelType: 0
-  _scenarioWidth: 40
-  _scenarioHeight: 5
-  _maxMazeColSquares: 3
-  _minMazeColSquares: 1
-  _speed: 1
-  _jumpForce: 1
+  LevelType: 1
+  ScenarioWidth: 0
+  ScenarioHeight: 0
+  MaxMazeColSquares: 0
+  MinMazeColSquares: 0
+  SpecialCoinsRange: 0
+  Speed: 0
+  JumpForce: 0
   SquarePrefab: {fileID: 0}
   WallsPrefab: {fileID: 0}
   CharacterPrefab: {fileID: 0}
+  FloorPrefab: {fileID: 0}
+  CoinPrefab: {fileID: 0}
+  SpecialCoinPrefab: {fileID: 0}
+  EndGamePortalPrefab: {fileID: 0}

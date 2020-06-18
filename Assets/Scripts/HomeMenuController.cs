@@ -13,6 +13,7 @@ public class HomeMenuController : MonoBehaviour
     [SerializeField] private GameObject _statsPanel;
     [SerializeField] private List<GameObject> _statsUI;
     [SerializeField] private Button PlayButton;
+
     void Start()
     {
         MainController.Instance.SetAppState(AppState.MainMenu);

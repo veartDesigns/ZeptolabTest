@@ -14,6 +14,7 @@ namespace Zeptolab
         public Action<int> SpecialCoinEarned;
         public Action<int> RemainingTimeChange;
         public Action<bool> OnGameEnd;
+        public Action<string> OnUserChange;
 
         private BaseGameConfig _currentGameConfig;
         private GameObject _character;
@@ -30,7 +31,7 @@ namespace Zeptolab
             {
                 _instance = this;
             }
-            _currentName = "User_" + UnityEngine.Random.RandomRange(0,999);
+            _currentName = "User_" + UnityEngine.Random.Range(0,999);
         }
 
         private void Start()
@@ -39,6 +40,7 @@ namespace Zeptolab
             ScenarioCreator.Instance.OnFinishScenario += OnFinishScenario;
             ScenarioCreator.Instance.Create(_currentGameConfig);
 
+            if (OnUserChange != null) OnUserChange(_currentName);
             StartTimer();
         }
 

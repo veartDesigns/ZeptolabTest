@@ -9,7 +9,9 @@ namespace Zeptolab
     {
         public GameObject CharacterModel;
         Animation _characterAnimation;
-        //TODO: pass some of that character behaviour conditions to the GameConfig Scriptable object settings in order to have the possibility of set different difficulties for each level
+        //TODO: pass some of that character behaviour vars to the GameConfig ScriptableObject settings 
+        //      in order to have the possibility of set different difficulties for each level
+
         public float RightSpeed;
         public float maxJumpHeight = 4;
         public float timeToJumpApex = .4f;

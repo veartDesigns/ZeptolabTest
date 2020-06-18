@@ -6,77 +6,90 @@ public class CameraController : MonoBehaviour {
     public static CameraController Instance { get { return _instance; } }
     private static CameraController _instance;
 
-    public SpaceCollisionsController target;
-	public float verticalOffset;
-	public float lookAheadDstX;
-	public float lookSmoothTimeX;
-	public float verticalSmoothTime;
-	public Vector2 focusAreaSize;
+    public SpaceCollisionsController Target;
+    public float VerticalOffset;
+    public float LookAheadDstX;
+    public float LookSmoothTimeX;
+    public float VerticalSmoothTime;
+    public Vector2 FocusAreaSize;
     public float Zoom;
 
 	FocusArea focusArea;
 
-	float currentLookAheadX;
-	float targetLookAheadX;
-	float lookAheadDirX;
-	float smoothLookVelocityX;
-	float smoothVelocityY;
+    private float currentLookAheadX;
+    private float targetLookAheadX;
+    private float lookAheadDirX;
+    private float smoothLookVelocityX;
+    private float smoothVelocityY;
 
-	bool lookAheadStopped;
+    private bool lookAheadStopped;
     private Camera _camera;
+    private bool _is2dView;
+    private Vector3 _currentRotation;
+    private Vector3 _2DRotation = Vector3.zero;
+    private Vector3 _3DRotation = new Vector3(10,0,0);
 
-    void Awake()
+    private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
         }
         _camera = GetComponent<Camera>();
+        _is2dView = true;
     }
 
     public void SetTarget(GameObject targetGo)
     {
-        target = targetGo.GetComponentInChildren<SpaceCollisionsController>() ;
-        focusArea = new FocusArea(target.boxCollider.bounds, focusAreaSize);
+        Target = targetGo.GetComponentInChildren<SpaceCollisionsController>() ;
+        focusArea = new FocusArea(Target.boxCollider.bounds, FocusAreaSize);
         _camera.orthographicSize = Zoom;
+    }
+    public void SwitchView( )
+    {
+        Debug.Log("SwitchView " + _is2dView);
+        _is2dView  = !_is2dView;
+        _currentRotation = _is2dView ? _2DRotation : _3DRotation;
+        VerticalOffset = _is2dView ? 1 : 2;
     }
 
     void Start() {
 
-        if (target == null) return;
+        if (Target == null) return;
 	}
 
 	void LateUpdate() {
-        if (target == null) return;
-		focusArea.Update (target.boxCollider.bounds);
+        if (Target == null) return;
+		focusArea.Update (Target.boxCollider.bounds);
 
-		Vector2 focusPosition = focusArea.centre + Vector2.up * verticalOffset;
+		Vector2 focusPosition = focusArea.centre + Vector2.up * VerticalOffset;
 
 		if (focusArea.velocity.x != 0) {
 			lookAheadDirX = Mathf.Sign (focusArea.velocity.x);
-			if (Mathf.Sign(target.playerInput.x) == Mathf.Sign(focusArea.velocity.x) && target.playerInput.x != 0) {
+			if (Mathf.Sign(Target.playerInput.x) == Mathf.Sign(focusArea.velocity.x) && Target.playerInput.x != 0) {
 				lookAheadStopped = false;
-				targetLookAheadX = lookAheadDirX * lookAheadDstX;
+				targetLookAheadX = lookAheadDirX * LookAheadDstX;
 			}
 			else {
 				if (!lookAheadStopped) {
 					lookAheadStopped = true;
-					targetLookAheadX = currentLookAheadX + (lookAheadDirX * lookAheadDstX - currentLookAheadX)/4f;
+					targetLookAheadX = currentLookAheadX + (lookAheadDirX * LookAheadDstX - currentLookAheadX)/4f;
 				}
 			}
 		}
 
 
-		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, lookSmoothTimeX);
+		currentLookAheadX = Mathf.SmoothDamp (currentLookAheadX, targetLookAheadX, ref smoothLookVelocityX, LookSmoothTimeX);
 
-		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, verticalSmoothTime);
+		focusPosition.y = Mathf.SmoothDamp (transform.position.y, focusPosition.y, ref smoothVelocityY, VerticalSmoothTime);
 		focusPosition += Vector2.right * currentLookAheadX;
 		transform.position = (Vector3)focusPosition + Vector3.forward * -10;
-	}
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(_currentRotation), 10* Time.deltaTime);
+    }
 
 	void OnDrawGizmos() {
 		Gizmos.color = new Color (1, 0, 0, .5f);
-		Gizmos.DrawCube (focusArea.centre, focusAreaSize);
+		Gizmos.DrawCube (focusArea.centre, FocusAreaSize);
 	}
 
 	struct FocusArea {

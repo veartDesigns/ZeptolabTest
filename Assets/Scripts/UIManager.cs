@@ -13,9 +13,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text _coinsText;
     [SerializeField] private Text _specialCoinsText;
     [SerializeField] private Text _time;
+    [SerializeField] private Text _userName;
     [SerializeField] private Animator _specialCoinsAnimator;
     [SerializeField] private Animator _coinsAnimator;
     [SerializeField] private Button _mainMenuButton;
+    [SerializeField] private Button _switchViewButton;
+
 
     private void Awake()
     {
@@ -23,14 +26,24 @@ public class UIManager : MonoBehaviour
         GamePlayManager.Instance.SpecialCoinEarned += OnGetSpecialCoin;
         GamePlayManager.Instance.RemainingTimeChange += RemainingTimeChange;
         GamePlayManager.Instance.OnGameEnd += OnGameEnd;
+        GamePlayManager.Instance.OnUserChange += OnUserChange;
 
         _mainMenuButton.onClick.AddListener(OnMainMenuButtonClick);
+        _switchViewButton.onClick.AddListener(OnSwitchViewButtonClick);
+    }
 
+    private void OnUserChange(string user)
+    {
+        _userName.text = user;
     }
 
     private void OnMainMenuButtonClick()
     {
         SceneManager.LoadScene(AppState.MainMenu.ToString());
+    }
+    private void OnSwitchViewButtonClick()
+    {
+        CameraController.Instance.SwitchView();
     }
 
     private void OnGameEnd(bool win)
